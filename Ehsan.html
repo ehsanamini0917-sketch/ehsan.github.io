@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>لیست قیمت داروخانه</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+
+  :root {
+    --bg: #f0f4ff;
+    --bg2: #ffffff;
+    --bg3: #e8edf8;
+    --card: #ffffff;
+    --card2: #f5f8ff;
+    --accent: #0072ff;
+    --accent2: #005ce6;
+    --accent3: #00a86b;
+    --gold: #f59e0b;
+    --text: #1a2340;
+    --text2: #4a5a80;
+    --text3: #8a9ab8;
+    --danger: #e0284a;
+    --success: #00a86b;
+    --border: rgba(0,114,255,0.12);
+    --border2: rgba(0,114,255,0.22);
+    --glow: 0 4px 24px rgba(0,114,255,0.10);
+    --radius: 14px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Vazirmatn', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    direction: rtl;
+  }
+
+  /* === HEADER === */
+  header {
+    background: linear-gradient(135deg, #ffffff 0%, #f0f5ff 100%);
+    border-bottom: 1px solid var(--border2);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,114,255,0.08);
+  }
+  .header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+    gap: 1rem;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 0 20px rgba(0,198,255,0.4);
+  }
+  .logo-text h1 { font-size: 1.1rem; font-weight: 700; color: var(--text); line-height: 1.2; }
+  .logo-text span { font-size: 0.72rem; color: var(--text2); font-weight: 400; }
+
+  .header-actions { display: flex; align-items: center; gap: 12px; }
+
+  .badge-live {
+    display: flex; align-items: center; gap: 6px;
+    background: rgba(0,230,118,0.1); border: 1px solid rgba(0,230,118,0.3);
+    border-radius: 20px; padding: 5px 12px;
+    font-size: 0.72rem; color: var(--success); font-weight: 500;
+  }
+  .badge-live::before {
+    content: ''; width: 7px; height: 7px; border-radius: 50%;
+    background: var(--success);
+    animation: pulse 1.5s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
+
+  .btn-admin {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; color: white; font-family: inherit;
+    padding: 8px 18px; border-radius: 8px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 600;
+    transition: all 0.2s; box-shadow: 0 4px 15px rgba(0,114,255,0.3);
+  }
+  .btn-admin:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,114,255,0.5); }
+
+  /* === MAIN LAYOUT === */
+  .main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* === STATS BAR === */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    display: flex; align-items: center; gap: 12px;
+    transition: all 0.3s;
+  }
+  .stat-card:hover { border-color: var(--border2); box-shadow: var(--glow); }
+  .stat-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; flex-shrink: 0;
+  }
+  .stat-icon.blue { background: rgba(0,198,255,0.12); }
+  .stat-icon.green { background: rgba(0,255,179,0.12); }
+  .stat-icon.gold { background: rgba(255,215,0,0.12); }
+  .stat-icon.purple { background: rgba(149,0,255,0.12); }
+  .stat-num { font-size: 1.5rem; font-weight: 800; color: var(--accent); line-height: 1; }
+  .stat-lbl { font-size: 0.75rem; color: var(--text2); margin-top: 3px; }
+
+  /* === SEARCH === */
+  .search-section {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--glow);
+  }
+  .search-title {
+    font-size: 0.82rem; font-weight: 600; color: var(--text2);
+    margin-bottom: 1rem; display: flex; align-items: center; gap: 8px;
+  }
+  .search-row {
+    display: flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .search-box {
+    flex: 1; min-width: 220px;
+    position: relative;
+  }
+  .search-box input {
+    width: 100%; background: #f5f8ff;
+    border: 1px solid var(--border2); border-radius: 10px;
+    color: var(--text); font-family: inherit; font-size: 0.9rem;
+    padding: 11px 44px 11px 14px;
+    transition: all 0.2s; outline: none;
+  }
+  .search-box input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,114,255,0.08); }
+  .search-box input::placeholder { color: var(--text3); }
+  .search-icon {
+    position: absolute; right: 13px; top: 50%; transform: translateY(-50%);
+    color: var(--text3); font-size: 18px; pointer-events: none;
+  }
+  .cat-filter {
+    display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+  }
+  .cat-btn {
+    background: var(--bg2); border: 1px solid var(--border);
+    color: var(--text2); font-family: inherit;
+    padding: 8px 14px; border-radius: 8px; cursor: pointer;
+    font-size: 0.78rem; font-weight: 500; transition: all 0.2s; white-space: nowrap;
+  }
+  .cat-btn:hover, .cat-btn.active {
+    background: rgba(0,198,255,0.12);
+    border-color: var(--accent); color: var(--accent);
+  }
+  .result-count {
+    margin-top: 0.8rem;
+    font-size: 0.78rem; color: var(--text3);
+  }
+  .result-count strong { color: var(--accent); }
+
+  /* === TABLE === */
+  .table-wrap {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .table-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1rem; flex-wrap: wrap;
+  }
+  .table-title { font-size: 0.9rem; font-weight: 600; color: var(--text2); }
+  .table-scroll { overflow-x: auto; }
+
+  table { width: 100%; border-collapse: collapse; }
+  thead th {
+    background: #f0f4ff;
+    padding: 12px 16px;
+    text-align: right;
+    font-size: 0.75rem; font-weight: 600; color: var(--text2);
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    position: sticky; top: 0;
+  }
+  thead th:first-child { width: 52px; text-align: center; }
+  tbody tr {
+    border-bottom: 1px solid rgba(0,114,255,0.06);
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: rgba(0,114,255,0.04); }
+  tbody td {
+    padding: 10px 16px;
+    font-size: 0.84rem; color: var(--text);
+    vertical-align: middle;
+  }
+  tbody td:first-child { text-align: center; color: var(--text3); font-size: 0.75rem; }
+
+  .drug-name { font-weight: 500; }
+  .drug-dose {
+    display: inline-block;
+    background: rgba(0,114,255,0.08);
+    color: var(--accent);
+    border-radius: 4px;
+    padding: 2px 7px;
+    font-size: 0.72rem; font-weight: 600; margin-right: 6px;
+  }
+  .price-cell { font-weight: 700; color: var(--accent3); font-size: 0.9rem; }
+  .price-empty { color: var(--text3); font-style: italic; font-size: 0.8rem; }
+  .cat-tag {
+    display: inline-block;
+    background: rgba(0,114,255,0.07); border: 1px solid rgba(0,114,255,0.18);
+    color: #4a5a80; border-radius: 4px;
+    padding: 2px 8px; font-size: 0.7rem; font-weight: 500;
+  }
+
+  .no-result {
+    text-align: center; padding: 3rem;
+    color: var(--text3); font-size: 0.9rem;
+  }
+
+  /* === MODAL === */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 200;
+    background: rgba(10,20,60,0.35); backdrop-filter: blur(6px);
+    align-items: center; justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card2);
+    border: 1px solid var(--border2);
+    border-radius: 18px; padding: 2rem;
+    width: 100%; max-width: 420px;
+    box-shadow: 0 8px 40px rgba(0,114,255,0.15);
+    animation: slideIn 0.25s ease;
+  }
+  @keyframes slideIn { from{transform:translateY(-20px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .modal h2 { font-size: 1.1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--text); }
+  .form-group { margin-bottom: 1rem; }
+  .form-group label { display: block; font-size: 0.78rem; color: var(--text2); margin-bottom: 6px; font-weight: 500; }
+  .form-group input {
+    width: 100%; background: #f5f8ff;
+    border: 1px solid var(--border2); border-radius: 8px;
+    color: var(--text); font-family: inherit; font-size: 0.9rem;
+    padding: 10px 12px; outline: none; transition: all 0.2s;
+  }
+  .form-group input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(0,114,255,0.08); }
+  .modal-actions { display: flex; gap: 10px; margin-top: 1.5rem; }
+  .btn-primary {
+    flex: 1; background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none; color: white; font-family: inherit;
+    padding: 11px; border-radius: 8px; cursor: pointer;
+    font-size: 0.9rem; font-weight: 600; transition: all 0.2s;
+  }
+  .btn-primary:hover { opacity: 0.9; }
+  .btn-cancel {
+    flex: 1; background: transparent; border: 1px solid var(--border2);
+    color: var(--text2); font-family: inherit;
+    padding: 11px; border-radius: 8px; cursor: pointer;
+    font-size: 0.9rem; font-weight: 500; transition: all 0.2s;
+  }
+  .btn-cancel:hover { border-color: var(--danger); color: var(--danger); }
+  .error-msg { color: var(--danger); font-size: 0.8rem; margin-top: 0.5rem; }
+
+  /* === ADMIN PANEL === */
+  .admin-bar {
+    display: none;
+    background: linear-gradient(90deg, rgba(0,114,255,0.07), rgba(0,92,230,0.05));
+    border: 1px solid var(--border2);
+    border-radius: var(--radius); padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+  .admin-bar.visible { display: flex; }
+  .admin-info { display: flex; align-items: center; gap: 10px; }
+  .admin-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--accent); box-shadow: 0 0 8px rgba(0,114,255,0.5);
+  }
+  .admin-label { font-size: 0.82rem; font-weight: 600; color: var(--accent); }
+  .admin-sub { font-size: 0.72rem; color: var(--text2); margin-top: 2px; }
+  .btn-logout {
+    background: rgba(255,77,109,0.1); border: 1px solid rgba(255,77,109,0.3);
+    color: var(--danger); font-family: inherit;
+    padding: 7px 14px; border-radius: 7px; cursor: pointer;
+    font-size: 0.78rem; font-weight: 600; transition: all 0.2s;
+  }
+  .btn-logout:hover { background: rgba(255,77,109,0.2); }
+
+  .edit-price-btn {
+    background: none; border: none; cursor: pointer;
+    color: var(--text3); font-size: 14px; padding: 4px 6px;
+    border-radius: 5px; transition: all 0.2s; display: none;
+  }
+  .is-admin .edit-price-btn { display: inline-flex; align-items: center; }
+  .edit-price-btn:hover { color: var(--accent); background: rgba(0,114,255,0.08); }
+
+  /* === TOAST === */
+  .toast-container { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 999; }
+  .toast {
+    background: #ffffff; border: 1px solid var(--border2);
+    border-radius: 10px; padding: 10px 20px;
+    font-size: 0.85rem; color: var(--text);
+    box-shadow: 0 8px 30px rgba(0,114,255,0.12);
+    animation: toastIn 0.3s ease, toastOut 0.3s ease 2.2s forwards;
+    margin-top: 8px;
+  }
+  .toast.success { border-color: rgba(0,230,118,0.4); color: var(--success); }
+  .toast.error { border-color: rgba(255,77,109,0.4); color: var(--danger); }
+  @keyframes toastIn { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+  @keyframes toastOut { to{transform:translateY(10px);opacity:0} }
+
+  /* === UPDATE MODAL === */
+  .update-modal {
+    background: var(--card2); border: 1px solid var(--border2);
+    border-radius: 16px; padding: 1.5rem;
+    width: 100%; max-width: 360px;
+    box-shadow: 0 8px 40px rgba(0,114,255,0.15);
+    animation: slideIn 0.25s ease;
+  }
+  .update-drug-name {
+    font-size: 0.95rem; font-weight: 600; color: var(--accent); margin-bottom: 1rem;
+    padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 768px) {
+    .main { padding: 1rem; }
+    .stats-bar { grid-template-columns: repeat(2,1fr); }
+    .header-inner { height: auto; padding: 0.8rem 0; flex-wrap: wrap; }
+    table { font-size: 0.78rem; }
+    tbody td { padding: 8px 10px; }
+  }
+  @media (max-width: 480px) {
+    .stats-bar { grid-template-columns: 1fr 1fr; }
+    .stat-num { font-size: 1.2rem; }
+  }
+</style>
+</head>
+<body class="">
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a class="logo" href="#">
+      <div class="logo-icon">💊</div>
+      <div class="logo-text">
+        <h1>لیست قیمت داروخانه</h1>
+        <span>سامانه نمایش قیمت داروها</span>
+      </div>
+    </a>
+    <div class="header-actions">
+      <div class="badge-live">آنلاین</div>
+      <button class="btn-admin" onclick="openLoginModal()">ورود مدیر</button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="main">
+
+  <!-- ADMIN BAR -->
+  <div class="admin-bar" id="adminBar">
+    <div class="admin-info">
+      <div class="admin-dot"></div>
+      <div>
+        <div class="admin-label">⚡ حالت مدیریت فعال</div>
+        <div class="admin-sub">برای تغییر قیمت، روی آیکون ✏️ کنار هر دارو کلیک کنید</div>
+      </div>
+    </div>
+    <button class="btn-logout" onclick="logout()">خروج</button>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-icon blue">💊</div>
+      <div>
+        <div class="stat-num" id="totalCount">0</div>
+        <div class="stat-lbl">تعداد کل داروها</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon green">✅</div>
+      <div>
+        <div class="stat-num" id="pricedCount">0</div>
+        <div class="stat-lbl">دارو با قیمت</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon gold">📂</div>
+      <div>
+        <div class="stat-num" id="catCount">0</div>
+        <div class="stat-lbl">دسته‌بندی</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon purple">🔄</div>
+      <div>
+        <div class="stat-num" id="updateTime">—</div>
+        <div class="stat-lbl">آخرین به‌روزرسانی</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SEARCH -->
+  <div class="search-section">
+    <div class="search-title">🔍 جستجوی پیشرفته</div>
+    <div class="search-row">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="نام دارو، دوز، یا بخشی از نام..." oninput="filterDrugs()">
+      </div>
+    </div>
+    <div class="cat-filter" id="catFilter" style="margin-top:1rem;"></div>
+    <div class="result-count" id="resultCount"></div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <div class="table-title">📋 لیست کامل داروها</div>
+    </div>
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>نام دارو</th>
+            <th>دسته‌بندی</th>
+            <th>قیمت (هزار تومان)</th>
+            <th id="editColHeader" style="display:none">ویرایش</th>
+          </tr>
+        </thead>
+        <tbody id="drugTableBody">
+          <tr><td colspan="5" class="no-result">در حال بارگذاری...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<!-- LOGIN MODAL -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <h2>🔐 ورود مدیر</h2>
+    <div class="form-group">
+      <label>نام کاربری</label>
+      <input type="text" id="loginUser" placeholder="نام کاربری" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>رمز عبور</label>
+      <input type="password" id="loginPass" placeholder="رمز عبور" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="error-msg" id="loginError"></div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="doLogin()">ورود</button>
+      <button class="btn-cancel" onclick="closeModal('loginModal')">انصراف</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PRICE MODAL -->
+<div class="modal-overlay" id="editModal">
+  <div class="update-modal">
+    <div class="update-drug-name" id="editDrugName"></div>
+    <div class="form-group">
+      <label>قیمت جدید (هزار تومان) — برای خالی گذاشتن، خالی بگذارید</label>
+      <input type="text" id="editPriceInput" placeholder="مثال: 42.5" onkeydown="if(event.key==='Enter')savePrice()">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-primary" onclick="savePrice()">💾 ذخیره</button>
+      <button class="btn-cancel" onclick="closeModal('editModal')">انصراف</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- FOOTER -->
+<footer style="text-align:center;padding:2rem 1rem 1.5rem;color:#b0bdd8;font-size:0.75rem;font-family:'Vazirmatn',sans-serif;letter-spacing:0.03em;">
+  Designed by <span style="color:#0072ff;font-weight:700;">Ehsan</span>
+</footer>
+
+<script>
+// ===================== DATA =====================
+const ADMIN_USER = 'admin';
+const ADMIN_PASS = 'pharmacy2024';
+
+const RAW_CATEGORIES = [
+  { name: 'قرص و کپسول', drugs: [
+    {name:'لیروپریم',dose:'2.5/500',price:'66'},{name:'لیروپریم',dose:'2.5/1000',price:'95'},
+    {name:'ملیجنت',dose:'2.5/500',price:'66'},{name:'ملیجنت',dose:'2.5/1000',price:'95'},
+    {name:'گلوکسیگام',dose:'5/1000',price:'70'},{name:'متفورمین/گلی بنکلامید',dose:'',price:''},
+    {name:'گلوتریو',dose:'25/5/1000',price:'530'},{name:'گلوتریو',dose:'10/5/1000',price:'420'},
+    {name:'گلوتریو',dose:'12.5/2.5/1000',price:'380'},{name:'گلوتریو',dose:'5/2.5/1000',price:'310'},
+    {name:'گلورنتا',dose:'10/5',price:'120'},{name:'گلورنتا',dose:'25/5',price:'170'},
+    {name:'سینوریپا',dose:'5/500',price:'65'},{name:'سینوریپا',dose:'12.5/500',price:'95'},
+    {name:'سینوریپا',dose:'12.5/1000',price:'102'},{name:'سینوریپا',dose:'5/1000',price:'72.3'},
+    {name:'آرترستان',dose:'50',price:'143'},{name:'آرترستان',dose:'100',price:'242'},
+    {name:'آربیکور پلاس',dose:'40/12.5',price:'100'},{name:'آربیکور پلاس',dose:'80/25',price:'170'},
+    {name:'آربیکور پلاس',dose:'80/12.5',price:'160'},
+    {name:'ریفاکسیمین (زیگات)',dose:'200 (12 عددی)',price:'102'},{name:'ریفاکسیمین (زیگات)',dose:'550 (14 عددی)',price:'254'},
+    {name:'والزومیکس',dose:'5/80',price:'49'},{name:'والزومیکس',dose:'5/160',price:'70'},
+    {name:'والزودک',dose:'12.5/80',price:'50'},{name:'والزومیکس',dose:'10/160',price:'78'},
+    {name:'والزودک',dose:'12.5/160',price:'69'},{name:'والزودک',dose:'25/160',price:'71'},
+    {name:'والزومیکس',dose:'10/160/12.5',price:'88'},{name:'والزومیکس',dose:'5/160/12.5',price:'80'},
+    {name:'زیپمت',dose:'50/500',price:'72'},{name:'زیپمت',dose:'50/1000',price:'90'},
+    {name:'گلی کلازید',dose:'30',price:'43'},{name:'گلی کلازید',dose:'60',price:'50'},
+    {name:'گلی کلازید',dose:'80',price:'45'},
+    {name:'داپاگلیفلوزین',dose:'5',price:'52'},{name:'داپاگلیفلوزین',dose:'10',price:'65'},
+    {name:'متفورمین',dose:'1000',price:'75'},{name:'متفورمین',dose:'500',price:'45'},
+    {name:'متفورمین هگزال',dose:'500',price:'31'},
+    {name:'گلوکوفاژ',dose:'500 (20 عددی)',price:'170'},{name:'گلوکوفاژ',dose:'1000 (15 عددی)',price:'225'},
+    {name:'پیوگلیتازون',dose:'45',price:'44'},{name:'پیوگلیتازون',dose:'30',price:'36'},{name:'پیوگلیتازون',dose:'15',price:'28'},
+    {name:'آسپرین',dose:'80',price:'21'},{name:'آسپرین',dose:'81',price:'21'},{name:'آسپرین',dose:'100',price:'22'},{name:'آسپرین',dose:'325',price:'25'},
+    {name:'پرانول',dose:'40',price:'24'},{name:'پرانول',dose:'20',price:'22'},{name:'پرانول',dose:'10',price:'20'},
+    {name:'پنتوپرازول',dose:'40 کپسول',price:'42'},{name:'پنتوپرازول',dose:'20 کپسول',price:'35'},
+    {name:'پنتوپرازول',dose:'40 قرص',price:'42'},{name:'پنتوپرازول',dose:'20 قرص',price:'35'},
+    {name:'گلی بنکلامید',dose:'',price:'22'},
+    {name:'رپاگلیناید',dose:'0.5',price:'22'},{name:'رپاگلیناید',dose:'1',price:'24'},{name:'رپاگلیناید',dose:'2',price:'28'},
+    {name:'امپاگلیفلوزین (گلوریپا)',dose:'25',price:'190'},{name:'امپاگلیفلوزین (گلوریپا)',dose:'10',price:'105'},
+    {name:'سیتاگلیپتین',dose:'100',price:'80'},{name:'سیتاگلیپتین',dose:'50',price:'55'},
+    {name:'سیتاگلیپتین عبیدی',dose:'100',price:'80'},{name:'سیتاگلیپتین عبیدی',dose:'50',price:'55'},
+    {name:'لیناگلیپتین',dose:'5',price:'50'},
+    {name:'لوزارتان',dose:'50',price:'40'},{name:'لوزارتان',dose:'25',price:'35'},{name:'لوزارتان-اچ',dose:'',price:'30'},
+    {name:'فروزماید',dose:'',price:'29'},{name:'متورال',dose:'50',price:'23.5'},
+    {name:'هیدروکلروتیازید',dose:'50',price:'24'},{name:'هیدروکلروتیازید',dose:'25',price:'21'},
+    {name:'کارودیلول',dose:'12.5',price:'30'},{name:'کارودیلول',dose:'6.25',price:'23'},
+    {name:'آتنولول',dose:'100',price:'22'},{name:'آتنولول',dose:'50',price:'20'},
+    {name:'تریامترن-اچ',dose:'',price:'23'},
+    {name:'امپرازول',dose:'20 (28 عددی)',price:'112'},{name:'امپرازول (اکتور و عبیدی)',dose:'20',price:'112'},
+    {name:'ازونیوم',dose:'40 (28 عددی)',price:'175'},{name:'ازونیوم',dose:'20 (28 عددی)',price:'135'},
+    {name:'نولپازا',dose:'40 (14 عددی)',price:'196'},{name:'نولپازا',dose:'20 (14 عددی)',price:'112'},
+    {name:'لانزوپرازول',dose:'30 (28 عددی)',price:'196'},{name:'لانزوپرازول',dose:'15 (28 عددی)',price:'151'},
+    {name:'وونوپرازان',dose:'10',price:'150'},{name:'وونوپرازان',dose:'20',price:'200'},
+    {name:'لیناکلوتاید',dose:'72',price:'400'},{name:'لیناکلوتاید',dose:'145',price:'500'},{name:'لیناکلوتاید',dose:'290',price:'600'},
+    {name:'آلومینیوم ام جی اس',dose:'',price:'21'},{name:'پانکراتین',dose:'',price:'75'},
+    {name:'دایجستیو',dose:'',price:'42'},{name:'کولپریبس',dose:'',price:''},
+    {name:'سوکرالفیت',dose:'',price:'27'},
+    {name:'نیتروکانتین',dose:'6.4',price:'40'},{name:'نیتروکانتین',dose:'2.6',price:'32'},
+    {name:'والسارتان',dose:'160',price:'67'},{name:'والسارتان',dose:'80',price:'48'},{name:'والسارتان',dose:'40',price:'25'},
+    {name:'آملودیپین',dose:'',price:'23'},{name:'نوروسک',dose:'',price:'74'},
+    {name:'نیتروگلیسیرین زیرزبانی',dose:'0.4',price:'71'},
+    {name:'نیتروگلیسیرین اسپری نیترولینگوال',dose:'1 عدد',price:'933'},
+    {name:'نیتروگلیسیرین اسپری نیتروپاف',dose:'1 عدد',price:'310'},
+    {name:'کاپتوپریل',dose:'50',price:'24'},{name:'کاپتوپریل',dose:'25',price:'19'},
+    {name:'بیزوپرولول',dose:'10',price:'40'},{name:'بیزوپرولول',dose:'5',price:'34'},{name:'بیزوپرولول',dose:'2.5',price:'30'},
+    {name:'اسپیرونولاکتون',dose:'100',price:'83'},{name:'اسپیرونولاکتون',dose:'25',price:'40'},
+    {name:'کلیدینیوم-سی',dose:'',price:'23'},{name:'اندانسترون',dose:'',price:'22'},
+    {name:'دیسیکلومین',dose:'',price:'22'},{name:'متوکلوپرامید',dose:'',price:'23'},
+    {name:'دیفنوکسیلات',dose:'',price:'23'},{name:'هیوسین',dose:'',price:'90'},
+    {name:'لوپرامید',dose:'',price:'27'},{name:'بیزاکودیل',dose:'',price:'21'},
+    {name:'فاموتیدین',dose:'40',price:'26'},{name:'فاموتیدین',dose:'20',price:'25'},{name:'سایمتیدین',dose:'',price:'20'},
+    {name:'اورسوداکسی کولیک اسید',dose:'300',price:'150'},
+    {name:'دایمتیکون',dose:'180',price:'37'},{name:'دایمتیکون',dose:'125',price:'32'},{name:'دایمتیکون',dose:'40',price:'29'},
+    {name:'بیسموت',dose:'',price:'55'},
+    {name:'جمفیبروزیل',dose:'450',price:'130'},{name:'جمفیبروزیل',dose:'300',price:'100'},
+    {name:'رزواستاتین',dose:'40',price:'52'},{name:'رزواستاتین',dose:'20',price:'37'},{name:'رزواستاتین',dose:'10',price:'31'},{name:'رزواستاتین',dose:'5',price:'26'},
+    {name:'آتورواستاتین',dose:'40',price:'50'},{name:'آتورواستاتین',dose:'20',price:'40'},{name:'آتورواستاتین',dose:'10',price:'35'},
+    {name:'لوواستاتین',dose:'20',price:'20.5'},
+    {name:'فیبرات',dose:'200',price:'80'},{name:'فنوفیبرات',dose:'100',price:'60'},
+    {name:'لووتیروکسین',dose:'100',price:'30'},{name:'لووتیروکسین',dose:'50',price:'26'},
+    {name:'لوتیروکسین خارجی',dose:'100 (بسته کامل)',price:'870'},{name:'لوتیروکسین خارجی',dose:'50 (بسته کامل)',price:'790'},
+    {name:'دگزامتازون',dose:'',price:'25'},{name:'بتامتازون',dose:'',price:'20'},
+    {name:'مزالازین',dose:'',price:'200'},{name:'پردنیزولون',dose:'50',price:'110'},{name:'پردنیزولون',dose:'5',price:'20'},
+    {name:'سیپروهپتادین',dose:'',price:'22'},{name:'متی مازول',dose:'',price:'28'},
+    {name:'سولفاسالازین',dose:'',price:'100'},{name:'سولفاسالازین انتریک کوت',dose:'',price:'110'},
+    {name:'یدوکینول',dose:'',price:'45'},
+    {name:'مبورین',dose:'135',price:'43'},{name:'مبورین',dose:'200',price:'90'},
+    {name:'دومپریدون',dose:'',price:'21'},
+    {name:'دیلتیازم',dose:'120',price:''},{name:'دیلتیازم',dose:'60',price:'35'},
+    {name:'ایزوسورباید',dose:'40',price:''},{name:'ایزوسورباید',dose:'10',price:'21'},
+    {name:'تیکاگرلور',dose:'90',price:'170'},{name:'تیکاگرلور',dose:'60',price:'115'},
+    {name:'کروزت',dose:'10/10',price:'69'},{name:'کروزت',dose:'10/20',price:'80'},{name:'کروزت',dose:'10/40',price:'96'},
+    {name:'ازتیمایب',dose:'10',price:'54'},{name:'کلونیدین',dose:'',price:'21'},
+    {name:'کلوپیدوگرل',dose:'',price:'102'},{name:'آمیودارون',dose:'200',price:'135'},
+    {name:'آپیکسابان',dose:'5',price:'100'},{name:'آپیکسابان',dose:'2.5',price:'65'},
+    {name:'ریواروکسابان',dose:'20',price:'150'},{name:'ریواروکسابان',dose:'15',price:'125'},
+    {name:'ریواروکسابان',dose:'10',price:'100'},{name:'ریواروکسابان',dose:'2.5',price:'65'},
+    {name:'وارفارین',dose:'',price:''},{name:'رانولایزین',dose:'',price:'240'},
+    {name:'اینداپامید',dose:'',price:'65'},{name:'دیگوسین',dose:'',price:''},
+    {name:'فلیکائینید',dose:'',price:''},
+    {name:'انالاپریل',dose:'5',price:'20'},{name:'انالاپریل',dose:'20',price:'35'},
+    {name:'متیل دوپا',dose:'',price:''},
+    {name:'تلمیسارتان',dose:'80',price:'150'},{name:'تلمیسارتان',dose:'40',price:'90'},
+    {name:'کلستیرامین (هر ساشه)',dose:'',price:'27.2'},
+    {name:'متوپرولول',dose:'95',price:'60'},{name:'متوپرولول',dose:'47.5',price:'50'},{name:'متوپرولول',dose:'23.75',price:'37'},
+    {name:'اپلرنون',dose:'50',price:'300'},{name:'اپلرنون',dose:'25',price:'170'},
+    {name:'وراپامیل',dose:'',price:'21'},
+  ]},
+  { name: 'آنتی‌بیوتیک', drugs: [
+    {name:'سفالکسین',dose:'250',price:'55'},{name:'سفالکسین',dose:'500',price:'120'},
+    {name:'آموکسی سیلین',dose:'250',price:'45'},{name:'آموکسی سیلین',dose:'500',price:'65'},
+    {name:'کو-آموکسی کلاو',dose:'625',price:'50'},{name:'کو-آموکسی کلاو',dose:'375',price:'42'},
+    {name:'آزیترومایسین',dose:'500',price:'105'},{name:'آزیترومایسین',dose:'250',price:'66'},
+    {name:'سیپروفلوکساسین',dose:'500',price:'65'},{name:'سیپروفلوکساسین',dose:'250',price:'44'},
+    {name:'مترونیدازول',dose:'500',price:'65'},{name:'مترونیدازول',dose:'250',price:'38'},
+    {name:'لووفلوکساسین',dose:'750',price:'140'},{name:'لووفلوکساسین',dose:'500',price:'100'},
+    {name:'لووفلوکساسین عبیدی',dose:'750',price:'140'},{name:'لووفلوکساسین عبیدی',dose:'500',price:'100'},
+    {name:'افلوکساسین',dose:'300',price:'55'},{name:'افلوکساسین',dose:'200',price:'42'},
+    {name:'تتراسایکلین',dose:'250',price:'50'},{name:'داکسی سایکلین',dose:'',price:'100'},
+    {name:'پنی سیلین وی',dose:'',price:'43'},
+    {name:'ریفامپین',dose:'300',price:'210'},{name:'ریفامپین',dose:'150',price:'120'},
+    {name:'سفکسیم',dose:'400',price:'145'},{name:'سفکسیم',dose:'200',price:'89'},
+    {name:'فارینات',dose:'500 (20 عددی)',price:'220'},{name:'فارینات',dose:'250 (20 عددی)',price:'120'},
+    {name:'مبندازول',dose:'',price:'40'},{name:'فنازوپیریدین',dose:'',price:'44'},
+    {name:'کوتریموکسازول',dose:'',price:'30.5'},{name:'کلوگزاسیلین',dose:'',price:'98'},
+    {name:'کلاریترومایسین',dose:'500',price:'200'},{name:'کلاریترومایسین',dose:'250',price:'85'},
+    {name:'ایورمکتین',dose:'6',price:'360'},{name:'ایورمکتین',dose:'3',price:'200'},
+    {name:'تینیدازول',dose:'',price:'60'},{name:'آلبندازول',dose:'',price:''},
+    {name:'لینزولید',dose:'(20 عددی)',price:'1.700'},
+    {name:'اریترومایسین',dose:'400',price:'104'},
+    {name:'کلیندامایسین',dose:'300',price:'140'},{name:'کلیندامایسین',dose:'150',price:'85'},
+    {name:'فسفومایسین (هر عدد)',dose:'',price:'230'},
+    {name:'نیتروفورانتوئین',dose:'',price:'30'},
+  ]},
+  { name: 'ضد ویروس و قارچ', drugs: [
+    {name:'آسیکلوویر',dose:'400',price:'72'},{name:'آسیکلوویر',dose:'200',price:''},
+    {name:'والاسیکلوویر',dose:'1000',price:'320'},{name:'والاسیکلوویر',dose:'500',price:'160'},
+    {name:'اوسلتامیویر',dose:'',price:''},
+    {name:'کتوکونازول',dose:'',price:'32'},
+    {name:'فلوکونازول',dose:'150 (هر عدد)',price:'5'},{name:'فلوکونازول',dose:'100 (هر عدد)',price:'4'},{name:'فلوکونازول',dose:'50 (هر عدد)',price:'2.3'},
+    {name:'ایتراکونازول',dose:'',price:'159'},{name:'تربینافین',dose:'',price:'51.5'},
+  ]},
+  { name: 'هورمون و ضدبارداری', drugs: [
+    {name:'لاینسترنول',dose:'',price:'60.5'},{name:'ال-دی',dose:'',price:'75'},
+    {name:'اچ-دی',dose:'',price:'84'},{name:'کنتراسمین',dose:'',price:'95'},
+    {name:'دزوسپیتو',dose:'',price:'95'},{name:'روکین',dose:'',price:''},
+    {name:'مارولین',dose:'',price:''},{name:'سیپروترون کامپاند',dose:'',price:''},
+    {name:'اورژانسی',dose:'1.5 (1 عددی)',price:'25'},{name:'اورژانسی',dose:'0.75 (2 عددی)',price:'30'},
+    {name:'سیپروترون استات',dose:'',price:''},{name:'دورسبرلین',dose:'',price:''},
+    {name:'دورسبلا',dose:'',price:''},{name:'دزولست',dose:'',price:''},
+    {name:'لویتود',dose:'',price:''},
+    {name:'استرادیول',dose:'1',price:''},{name:'استرادیول',dose:'2',price:'40'},
+    {name:'استروژن کونژوگه',dose:'0.625',price:'150'},{name:'استروژن کونژوگه',dose:'1.25',price:'200'},{name:'استروژن کونژوگه',dose:'0.3',price:'100'},
+    {name:'مدروکسی پروژسترون',dose:'',price:'38.5'},
+    {name:'قرص ویتاگنوس',dose:'',price:'32'},{name:'قطره ویتاگنوس',dose:'1 عدد',price:'85'},
+    {name:'تاموکسیفن',dose:'10',price:'65'},{name:'تاموکسیفن',dose:'20',price:'30'},
+    {name:'اکسی متولون',dose:'',price:'116'},{name:'کلومیفن',dose:'',price:'90'},
+    {name:'متیل ارگونوین',dose:'',price:''},{name:'کابرگولین',dose:'1',price:''},{name:'کابرگولین',dose:'0.5',price:'440'},
+  ]},
+  { name: 'اعصاب و روان', drugs: [
+    {name:'بی پریدین',dose:'',price:'29'},{name:'نوراستور',dose:'125',price:''},{name:'نوراستور',dose:'250 (100 عددی)',price:'2750'},
+    {name:'لوودوپا-سی',dose:'10/100',price:''},{name:'لوودوپا-سی',dose:'25/250',price:''},
+    {name:'پرامیپکسول',dose:'0.18',price:'25'},{name:'پرامیپکسول',dose:'0.7',price:'30'},
+    {name:'پیراستام',dose:'',price:'36'},
+    {name:'ریواستیگمین',dose:'1.5',price:'26'},{name:'ریواستیگمین',dose:'3',price:'42'},{name:'ریواستیگمین',dose:'4.5',price:'55'},
+    {name:'پریدوستیگمین',dose:'60',price:''},{name:'آمانتادین',dose:'',price:'50'},
+    {name:'ممانتین',dose:'5',price:'25'},{name:'ممانتین',dose:'10',price:'32'},{name:'ممانتین',dose:'14',price:''},{name:'ممانتین',dose:'21',price:''},
+    {name:'دنپزیل',dose:'5',price:'48'},{name:'دنپزیل',dose:'10',price:''},
+    {name:'هیدروکسی کلروکین',dose:'',price:'120'},
+    {name:'آزاتیوپرین',dose:'',price:'50'},
+    {name:'آلوپرینول',dose:'100',price:'34'},{name:'آلوپرینول',dose:'300',price:'68'},
+    {name:'فبوکسوستات',dose:'40',price:'63'},{name:'فبوکسوستات',dose:'80',price:''},
+    {name:'کوئیتیاپین',dose:'200',price:'110'},{name:'کوئیتیاپین',dose:'100',price:'84'},{name:'کوئیتیاپین',dose:'50',price:'50'},{name:'کوئیتیاپین',dose:'25',price:'37'},
+    {name:'دلوکستین',dose:'60',price:''},{name:'دلوکستین',dose:'30',price:''},{name:'دلوکستین',dose:'20',price:''},
+    {name:'بوپروپیون',dose:'150',price:'76'},{name:'بوپروپیون',dose:'75',price:'53'},
+    {name:'ونلافاکسین کپسول',dose:'75',price:''},{name:'ونلافاکسین کپسول',dose:'37.5',price:''},
+    {name:'ونلافاکسین قرص',dose:'75',price:'40'},{name:'ونلافاکسین قرص',dose:'37.5',price:''},
+    {name:'سرترالین',dose:'50',price:'55'},{name:'سرترالین',dose:'100',price:'85'},
+    {name:'آسنترا',dose:'50 (7 عددی)',price:'112'},{name:'آسنترا',dose:'100 (7 عددی)',price:'210'},
+    {name:'اس سیتالوپرام',dose:'20',price:'64'},{name:'اس سیتالوپرام',dose:'10',price:'43'},
+    {name:'سیتالوپرام',dose:'20',price:'22.5'},{name:'سیتالوپرام',dose:'40',price:'26'},
+    {name:'لیتیم کربنات',dose:'',price:'85'},
+    {name:'میرتازاپین',dose:'7.5',price:''},{name:'میرتازاپین',dose:'15',price:''},{name:'میرتازاپین',dose:'30',price:''},{name:'میرتازاپین',dose:'45',price:''},
+    {name:'آتوموکستین',dose:'10',price:'60'},{name:'آتوموکستین',dose:'18',price:'75'},{name:'آتوموکستین',dose:'25',price:''},{name:'آتوموکستین',dose:'40',price:'90'},{name:'آتوموکستین',dose:'60',price:''},
+    {name:'لاکوزامید',dose:'50',price:'90'},{name:'لاکوزامید',dose:'100',price:'170'},{name:'لاکوزامید',dose:'150',price:'250'},{name:'لاکوزامید',dose:'200',price:'320'},
+    {name:'توپیرامات',dose:'100',price:'40'},{name:'توپیرامات',dose:'25',price:'21'},{name:'توپیرامات',dose:'50',price:'28'},
+    {name:'پریمیدون',dose:'',price:''},
+    {name:'لوبل',dose:'1000',price:'200'},{name:'لوبل',dose:'500',price:'125'},{name:'لوبل',dose:'250',price:'70'},
+    {name:'آلپرازولام',dose:'0.5',price:'40'},{name:'آلپرازولام',dose:'1',price:'45'},
+    {name:'کلونازپام',dose:'1',price:'20'},{name:'کلونازپام',dose:'2',price:'22'},
+    {name:'کلردیازپوکساید',dose:'10',price:'30'},{name:'کلردیازپوکساید',dose:'5',price:'26'},
+    {name:'لورازپام',dose:'2',price:'25'},{name:'لورازپام',dose:'1',price:'23'},
+    {name:'دیازپام',dose:'10',price:''},{name:'دیازپام',dose:'5',price:''},{name:'دیازپام',dose:'2',price:''},{name:'دیازپام',dose:'1',price:''},
+    {name:'فلورازپام',dose:'',price:'22'},{name:'اگزاسپام',dose:'10',price:'22'},
+    {name:'بوسپیرون',dose:'10',price:'28'},{name:'بوسپیرون',dose:'5',price:'25'},
+    {name:'زولپیدم',dose:'5',price:'26'},{name:'زولپیدم',dose:'10',price:'30'},
+    {name:'بتاهیستین',dose:'16',price:'38'},{name:'بتاهیستین',dose:'8',price:'22'},
+    {name:'فیناستراید',dose:'1',price:'30'},{name:'فیناستذاید',dose:'5',price:'150'},
+    {name:'ترازوسین',dose:'2',price:'23.5'},{name:'ترازوسین',dose:'5',price:'28.5'},
+    {name:'پرازوسین',dose:'1',price:'20'},{name:'پرازوسین',dose:'5',price:'36'},
+    {name:'پروترال',dose:'',price:'46'},
+    {name:'گاباپنتین',dose:'100',price:'40'},{name:'گاباپنتین',dose:'300',price:'75'},{name:'گاباپنتین',dose:'400',price:'55'},
+    {name:'پرگابالین',dose:'150',price:'78'},{name:'پرگابالین',dose:'75',price:'58'},
+    {name:'لیریکا',dose:'(14 عددی)',price:'870'},{name:'پرگابالین',dose:'50',price:'48'},{name:'پرگابالین',dose:'100',price:'69'},
+    {name:'کلشی سین',dose:'',price:'33'},
+    {name:'ریزاتریپتان',dose:'5',price:'80'},{name:'ریزاتریپتان',dose:'10',price:'110'},
+    {name:'ریزاملت',dose:'(6 عددی)',price:'80'},
+    {name:'سوماتریپتان',dose:'50',price:''},{name:'سوماتریپتان',dose:'100',price:''},
+    {name:'میگرستاپ',dose:'50 (4 عددی)',price:'28'},
+    {name:'آریپیپرازول',dose:'5',price:'35'},{name:'آریپیپرازول',dose:'10',price:'40'},{name:'آریپیپرازول',dose:'15',price:'45'},
+    {name:'پرفنازین',dose:'2',price:'21'},{name:'پرفنازین',dose:'4',price:'23'},{name:'پرفنازین',dose:'8',price:'27'},
+    {name:'الانزاپین',dose:'5',price:'28'},{name:'الانزاپین',dose:'2.5',price:'24'},
+    {name:'تریامسیدون',dose:'1',price:'20'},
+    {name:'ریسپریدون',dose:'2',price:'26'},{name:'ریسپریدون',dose:'4',price:'35'},
+    {name:'هالوپریدول',dose:'0.5',price:'23'},{name:'هالوپریدول',dose:'5',price:'25'},
+    {name:'کلوزاپین',dose:'100',price:'40'},{name:'کلوزاپین',dose:'25',price:'25'},
+    {name:'کلرپرومازین',dose:'25',price:'25'},{name:'کلرپرومازین',dose:'100',price:'80'},
+    {name:'فلوکستین',dose:'10',price:'30'},{name:'فلوکستین',dose:'20',price:'35'},
+    {name:'فلوکسامین',dose:'50',price:'45'},{name:'فلوکسامین',dose:'100',price:'75'},
+    {name:'ترازودن',dose:'50',price:'22'},
+    {name:'پاروکستین',dose:'20',price:'31'},{name:'پاروکستین',dose:'40',price:'45'},
+    {name:'کلومیپرامین',dose:'100',price:''},{name:'کلومیپرامین',dose:'75',price:'54'},{name:'کلومیپرامین',dose:'50',price:'40'},{name:'کلومیپرامین',dose:'25',price:'26'},{name:'کلومیپرامین',dose:'10',price:'19'},
+    {name:'ایمی پرامین',dose:'10',price:'23'},{name:'ایمیپرامین',dose:'25',price:'25'},
+    {name:'آمی تریپتیلین',dose:'10',price:'20'},{name:'آمی تریپتیلین',dose:'25',price:'25'},{name:'آمی تریپتیلین',dose:'50',price:'30'},
+    {name:'نوروتریپتیلین',dose:'10',price:'23'},{name:'نوروتریپتیلین',dose:'25',price:'27'},
+    {name:'دوکسپین',dose:'10',price:'20'},{name:'دوکسپین',dose:'25',price:'40'},
+    {name:'لاموتریژین',dose:'100',price:'60'},{name:'لاموتریژین',dose:'50',price:'40'},{name:'لاموتریژین',dose:'25',price:'30'},
+    {name:'کلوبازام',dose:'',price:'56'},
+    {name:'فنی توئین',dose:'100',price:'30'},{name:'فنی توئین/فنوباربیتال',dose:'',price:'32'},
+    {name:'فنوباربیتال',dose:'100',price:'28'},{name:'فنوباربیتال',dose:'60',price:'23'},{name:'فنوباربیتال',dose:'15',price:'18.5'},
+    {name:'والپروات سدیم',dose:'200',price:'55'},{name:'والپروات سدیم',dose:'500',price:'90'},
+    {name:'کاربامازپین',dose:'200',price:'37'},{name:'تگاتارد',dose:'400',price:'73'},{name:'تگاتارد',dose:'200',price:'53'},{name:'کاربامازپین',dose:'400',price:''},
+    {name:'ملاتونین',dose:'3',price:''},{name:'ملاتونین',dose:'5',price:''},{name:'ملاتونین',dose:'10',price:''},
+    {name:'تتراپنازین',dose:'',price:'190'},
+    {name:'پرفنیدون',dose:'267',price:'270'},{name:'پرفنیدون',dose:'801',price:'1.120'},
+    {name:'لوتیراستام',dose:'500',price:''},{name:'لوتیراستام',dose:'750',price:''},{name:'لوتیراستام',dose:'1000',price:''},
+  ]},
+  { name: 'ضد درد و التهاب', drugs: [
+    {name:'ایبوبروفن',dose:'800',price:'80'},{name:'ایبوبروفن',dose:'600',price:'70'},{name:'ایبوبروفن',dose:'400',price:'42'},{name:'ایبوبروفن',dose:'200',price:'32'},
+    {name:'ادوالژین',dose:'400',price:'60'},{name:'ژلوفن',dose:'400',price:'80'},{name:'ژلوفن',dose:'200',price:'60'},
+    {name:'آکسار',dose:'',price:'31'},
+    {name:'استامینوفن',dose:'500',price:'27'},{name:'استامینوفن',dose:'325',price:'25'},
+    {name:'استامینوفن کدئین',dose:'',price:'40'},
+    {name:'ناپروکسن',dose:'500',price:'85'},{name:'ناپروکسن',dose:'250',price:'60'},{name:'ناپروکسن',dose:'200',price:'120'},
+    {name:'سلکوکسیب',dose:'200',price:'55'},{name:'سلکوکسیب',dose:'100',price:'45'},
+    {name:'سلبرکس',dose:'200',price:'1.300'},
+    {name:'پیروکسیکام',dose:'',price:'22'},{name:'استاژل',dose:'500',price:'22'},
+    {name:'فامیپروفن',dose:'',price:'35'},{name:'روباکوفن',dose:'',price:'38.5'},
+    {name:'کدیمکس',dose:'(20 عددی)',price:'136'},{name:'کدیمال',dose:'(20 عددی)',price:'54'},
+    {name:'مفنامیک اسید',dose:'',price:'40'},
+    {name:'سیناریزین',dose:'75',price:'22'},{name:'سیناریزین',dose:'25',price:'20'},
+    {name:'کتورولاک',dose:'',price:'21'},{name:'برم هگزین',dose:'',price:'22'},
+    {name:'تیزانیدین',dose:'',price:'24'},
+    {name:'باکلوفن',dose:'25',price:'40'},{name:'باکلوفن',dose:'10',price:'30'},
+    {name:'متوکاربامول',dose:'',price:'31'},
+    {name:'ملوکسیکام',dose:'15',price:'44'},{name:'ملوکسیکام',dose:'7.5',price:'35'},
+    {name:'ایندومتاسین',dose:'75',price:'22'},{name:'ایندومتاسین',dose:'25',price:'40'},
+    {name:'دیکلوفناک',dose:'25',price:'21'},{name:'دیکلوفناک',dose:'50',price:'25'},{name:'دیکلوفناک',dose:'100',price:'29'},
+    {name:'آلفن ایکس',dose:'100',price:'29'},{name:'ولتادک',dose:'100',price:'29'},
+    {name:'ژلوفن کامپاند',dose:'',price:'68'},{name:'سه کاره',dose:'',price:'60'},
+  ]},
+  { name: 'آنتی‌هیستامین', drugs: [
+    {name:'کتوتیفن',dose:'',price:'21'},
+    {name:'فستوور',dose:'180',price:'50'},
+    {name:'فکسوفنادین',dose:'180',price:'63'},{name:'فکسوفنادین',dose:'120',price:'53'},{name:'فکسوفنادین',dose:'60',price:'63'},
+    {name:'بیلاستین',dose:'',price:'131'},
+    {name:'آنتی هیستامین',dose:'',price:'20'},
+    {name:'دس لوراتادین (نئوتادین)',dose:'',price:'30'},{name:'لوراتادین',dose:'',price:'30'},
+    {name:'نئوتادین',dose:'',price:'30'},
+    {name:'هیدروکورتیزون',dose:'',price:'19'},{name:'فلودروکورتیزون',dose:'',price:'21'},
+    {name:'کلرفنیرامین',dose:'',price:'20'},
+    {name:'ستیریزین',dose:'10',price:'23'},{name:'ستیریزین',dose:'5',price:'20'},
+    {name:'هیدروکسی زین',dose:'25',price:'22'},{name:'هیدروکسی زین',dose:'10',price:'20'},
+    {name:'مونته لوکاست',dose:'10',price:'50'},{name:'مونته لوکاست',dose:'5',price:'45'},
+    {name:'ایروکاست',dose:'10',price:'50'},
+  ]},
+  { name: 'ادرار و کلیه', drugs: [
+    {name:'دوتاستراید',dose:'',price:''},
+    {name:'بتانکول',dose:'25',price:'106'},{name:'بتانکول',dose:'10',price:'53'},
+    {name:'هیدروکسی اوره',dose:'',price:''},
+    {name:'پتاسیم کلراید',dose:'',price:''},
+    {name:'اکسی بوتنین',dose:'5',price:'29'},{name:'تولترودین',dose:'1',price:'25'},{name:'تولترودین',dose:'2',price:'30'},
+    {name:'سولفیناسین',dose:'10',price:'90'},{name:'سولفیناسین',dose:'5',price:'50'},
+    {name:'لتروزول',dose:'',price:'32'},
+    {name:'پتاسیم سیترات',dose:'10',price:'58'},{name:'پتاسیم سیترات',dose:'5',price:''},{name:'پتاسیم سیترات',dose:'15',price:''},
+    {name:'پنتوکسی فیلین',dose:'',price:'95'},
+    {name:'استازولامید',dose:'',price:'45'},
+    {name:'ایزوکسوپرین',dose:'',price:'30'},
+    {name:'ترانیکزامیک اسید',dose:'',price:'90'},
+    {name:'داپوکستین',dose:'30 (6 عددی)',price:'105'},{name:'داپوکستین',dose:'60 (6 عددی)',price:'150'},
+    {name:'سیلدنافیل',dose:'25 (10 عدد)',price:'32'},{name:'سیلدنافیل',dose:'50 (10 عدد)',price:'52'},{name:'سیلدنافیل',dose:'100 (10 عدد)',price:'76'},
+    {name:'تادالافیل',dose:'5 (10 عدد)',price:'44'},{name:'تادالافیل',dose:'10 (10 عدد)',price:'80'},{name:'تادالافیل',dose:'20 (10 عدد)',price:'100'},
+  ]},
+  { name: 'ویتامین و مکمل', drugs: [
+    {name:'ویتامین B6',dose:'',price:'28'},{name:'ویتامین B1',dose:'100',price:'31'},{name:'ویتامین B1',dose:'300',price:'65'},
+    {name:'کلسیم-د',dose:'',price:'38'},{name:'بیوتین',dose:'5',price:''},
+    {name:'فولیک اسید',dose:'1',price:'27'},{name:'فولیک اسید',dose:'5',price:'32'},
+    {name:'فروس سولفات',dose:'',price:'14.5'},{name:'فرفولیک',dose:'',price:'33'},{name:'هماتینیک',dose:'',price:'20'},
+    {name:'ویتامین D3',dose:'50.000',price:'70'},{name:'ویتامین D3',dose:'1000',price:'30'},
+    {name:'امگا 3 (تهران دارو)',dose:'',price:'138'},
+    {name:'ویتامین E',dose:'400',price:'93'},
+    {name:'ویواتیون E',dose:'400 (30 عددی)',price:'376'},
+    {name:'کلداکس',dose:'',price:'40'},{name:'اکتوکلد',dose:'',price:'40'},
+    {name:'کلداستاپ رازک',dose:'',price:'35'},
+    {name:'ساشه سرماخوردگی',dose:'',price:'200'},
+    {name:'آدالت کلد',dose:'',price:'31'},{name:'کوریزان',dose:'',price:'31'},
+  ]},
+  { name: 'شربت و قطره', drugs: [
+    {name:'شربت سفالکسین',dose:'250',price:'185'},{name:'شربت سفالکسین',dose:'125',price:'95'},
+    {name:'شربت سفکسیم',dose:'100/100',price:'140'},{name:'شربت سفکسیم',dose:'50/100',price:'85'},
+    {name:'شربت کوآموکسی کلاو',dose:'643',price:'185'},{name:'شربت کوآموکسی کلاو',dose:'457',price:'165'},
+    {name:'شربت کوآموکسی کلاو',dose:'312',price:'145'},{name:'شربت کوآموکسی کلاو',dose:'228',price:'130'},{name:'شربت کوآموکسی کلاو',dose:'156',price:'110'},
+    {name:'شربت کوتری موکسازول',dose:'',price:'70'},{name:'شربت مترونیدازول',dose:'',price:'200'},
+    {name:'شربت کلاریترومایسین',dose:'',price:'230'},{name:'قطره نیستاتین',dose:'',price:'95'},
+    {name:'شربت آزیترومایسین',dose:'200',price:'81'},{name:'شربت آزیترومایسین',dose:'100',price:'57'},
+    {name:'شربت آموکسی سیلین',dose:'250',price:'100'},{name:'شربت آموکسی سیلین',dose:'125',price:'70'},
+    {name:'ساشه اس-امپرازول',dose:'10 (یک عدد)',price:'20'},{name:'ساشه اس-امپرازول',dose:'5',price:'10'},
+    {name:'شربت لاکتولوز',dose:'',price:'480'},
+    {name:'شربت سودوافدرین',dose:'',price:'55'},
+    {name:'شربت اکسپکتورانت کدئین',dose:'',price:'90'},{name:'شربت اکسپکتورانت',dose:'',price:'70'},
+    {name:'شربت کوریزان آنفولانزا',dose:'',price:'120'},{name:'شربت کوریزان درد و تب',dose:'',price:'180'},{name:'شربت کوریزان سرماخوردگی',dose:'',price:'85'},
+    {name:'شربت سرماخوردگی ساده',dose:'',price:'55'},{name:'شربت فاموتیدین',dose:'',price:'80'},
+    {name:'دکسترومتورفان',dose:'15 عددی (ژلوکاف)',price:'75'},
+    {name:'شربت ایبوپروفن',dose:'',price:'130'},{name:'شربت استامینوفن',dose:'',price:'180'},
+    {name:'قطره پاراکید',dose:'',price:'100'},{name:'قطره استامینوفن',dose:'',price:'60'},
+    {name:'شربت دیفن هیدرامین کامپاند',dose:'',price:'60'},{name:'شربت دیفن هیدرامین',dose:'',price:'62'},
+    {name:'شربت گایافنزین',dose:'',price:'60'},{name:'شربت برم هگزین',dose:'',price:'60'},
+    {name:'شربت کتوتیفن',dose:'120',price:'80'},{name:'شربت کتوتیفن',dose:'60',price:'50'},
+    {name:'شربت دیسیکلومین',dose:'',price:'76'},{name:'شربت اندانسترون',dose:'',price:'70'},
+    {name:'شربت لوپرامید',dose:'',price:'80'},{name:'شربت دومپریدون',dose:'',price:'150'},
+    {name:'شربت دکسترومتورفان',dose:'',price:'53'},{name:'شربت پرومتازین',dose:'',price:'50'},
+    {name:'شربت آلومینیوم-ام-جی-اس',dose:'',price:'195'},
+    {name:'شربت منیزیم هیدروکساید',dose:'',price:'115'},
+    {name:'شربت ایمیونیس',dose:'',price:'414'},{name:'شربت آسماویت',dose:'',price:'415'},
+    {name:'استئوکر',dose:'',price:'231'},
+    {name:'شربت فلوکستین',dose:'',price:'65'},
+    {name:'شربت والپروات سدیم',dose:'250',price:'155'},{name:'شربت والپروات سدیم',dose:'120',price:'97'},
+    {name:'شربت پیراستام',dose:'',price:'170'},{name:'شربت کاربامازپین',dose:'',price:'123'},{name:'شربت لوتیراستام',dose:'',price:'170'},
+    {name:'شربت ال-کارنیتین',dose:'',price:'73'},
+    {name:'سانستول آهن دار',dose:'',price:'462'},{name:'سانستول زینک پلاس',dose:'',price:'462'},{name:'سانستول ساده',dose:'',price:'439'},
+    {name:'پدیابست اپتایت',dose:'',price:'360'},{name:'پدیابست مولتی زینک',dose:'',price:'293'},{name:'پدیابست اسلیپ',dose:'',price:'355'},
+    {name:'شربت زینک سولفات',dose:'10',price:'76'},
+    {name:'قطره دایمتیکون',dose:'',price:'40'},
+    {name:'قطره کولیک ایز',dose:'',price:'240'},
+    {name:'شربت گرایپ واتر',dose:'',price:'96'},
+    {name:'شربت لوراتادین',dose:'',price:'60'},{name:'شربت دس لوراتادین',dose:'',price:'160'},
+    {name:'شربت هیدروکسی زین',dose:'',price:'63'},{name:'شربت ستیریزین',dose:'',price:'100'},
+    {name:'شربت فکسوفنادین',dose:'120',price:'185'},{name:'شربت فکسوفنادین',dose:'60',price:'120'},
+    {name:'شربت کالیک اطفال',dose:'',price:'164'},{name:'شربت کالیک بزرگسالان',dose:'',price:'150'},
+    {name:'شربت رکولیک',dose:'',price:'200'},{name:'شربت پدی کاف',dose:'',price:'150'},
+    {name:'شربت ایورافید',dose:'',price:'130'},{name:'شربت سیموپرگنا',dose:'',price:'187'},
+    {name:'شربت سالبوتامول',dose:'',price:'60'},{name:'شربت تئوفلین-جی',dose:'',price:'85'},
+    {name:'شربت زادیتن',dose:'',price:'630'},
+    {name:'شربت پلارژین کیدز',dose:'',price:'350'},{name:'شربت پلارژین بزرگسالان',dose:'',price:'350'},
+    {name:'قطره پلارژین',dose:'',price:'250'},
+    {name:'قطره آهن پدیابست',dose:'',price:'214'},{name:'قطره آهن آیروفیکس',dose:'',price:'282'},
+    {name:'قطره آهن لیپوزوفرفورت',dose:'',price:'293'},{name:'قطره آهن لیپوزوفر',dose:'',price:'200'},
+    {name:'شربت آهن فروگلوبین',dose:'',price:'412'},{name:'شربت آهن ایروفیکس',dose:'',price:'474'},
+    {name:'شربت آوی پکت',dose:'',price:'200'},{name:'شربت کاف ویا',dose:'',price:'280'},
+    {name:'شربت بنفشه',dose:'',price:'165'},{name:'شربت برونکلد',dose:'',price:'320'},
+    {name:'شربت نوریز موکو',dose:'',price:'55'},{name:'شربت نوریز کلد',dose:'',price:'55'},
+    {name:'شربت ستادین G',dose:'',price:'160'},{name:'شربت ستادین D',dose:'',price:'160'},
+  ]},
+  { name: 'پماد و محلول', drugs: [
+    {name:'پماد هیدروکورتیزون',dose:'',price:'75'},{name:'پماد بتامتازون',dose:'',price:'65'},
+    {name:'پماد تریامسینولون',dose:'',price:'120'},{name:'پماد تریامسینولون ان ان',dose:'',price:'120'},
+    {name:'پماد مومتازون',dose:'15 گرم',price:'60'},{name:'پماد فلوئوسینولون',dose:'',price:'90'},
+    {name:'پماد کلوبتازول',dose:'',price:'59'},
+    {name:'پماد تتراسایکلین',dose:'',price:'123'},{name:'پماد موپیروسین',dose:'',price:'240'},
+    {name:'پماد زینک اکساید',dose:'',price:'148'},{name:'پماد کالامین',dose:'',price:'148'},
+    {name:'پماد آد',dose:'',price:'148'},{name:'پماد آسیکلوویر',dose:'',price:'120'},
+    {name:'پماد کروتامیتون',dose:'',price:'81'},
+    {name:'پماد کلوتریمازول',dose:'15 گرم',price:'130'},{name:'پماد تربینافین',dose:'',price:'150'},
+    {name:'پماد کتوکونازول',dose:'',price:'115'},{name:'پماد سرتاکونازول',dose:'',price:'350'},
+    {name:'پماد کلیندامایسین',dose:'',price:'75'},{name:'ژل آداپالن',dose:'',price:'200'},
+    {name:'پماد ترتینوئین',dose:'',price:'70'},{name:'ژل ترتینوئین',dose:'',price:'75'},
+    {name:'پماد هیدروکینون',dose:'',price:'110'},
+    {name:'پماد پانژل',dose:'5%',price:'765'},{name:'پماد پانژل',dose:'10%',price:'786'},
+    {name:'پماد کالاندولا',dose:'',price:'160'},
+    {name:'پماد دکسپانتنول',dose:'',price:'148'},
+    {name:'پماد کلوتریزون',dose:'45 گرم',price:'128'},{name:'پماد کلوتریزون',dose:'30 گرم',price:'105'},{name:'پماد کلوتریزون',dose:'15 گرم',price:'79'},
+    {name:'پماد لیدوکائین-اچ',dose:'',price:'100'},{name:'پماد زایلا-پی',dose:'',price:'120'},
+    {name:'پماد ملیسان',dose:'',price:'120'},
+    {name:'پماد متیل سالیسیلات',dose:'',price:'80'},
+    {name:'پماد نیتروفورازون',dose:'',price:'85'},
+    {name:'پماد پرمترین',dose:'1% 60 گرم',price:'210'},{name:'پماد پرمترین',dose:'5% 30 گرمی',price:'160'},
+    {name:'پماد کلسی پوتریول',dose:'',price:'690'},
+    {name:'پماد سیلورسولفادیازین',dose:'',price:'290.5'},
+    {name:'پماد منوبنزن',dose:'',price:'550'},{name:'پماد فنی توئین',dose:'',price:'72'},
+    {name:'آفتین ژل',dose:'',price:'160'},{name:'پماد آنتی هموروئید',dose:'',price:'80'},
+    {name:'پماد دیکلوفناک',dose:'',price:'125'},{name:'پماد پیروکسیکام',dose:'',price:'115'},
+    {name:'پماد آلفا',dose:'',price:'525'},{name:'پماد رژودرم',dose:'',price:'575'},
+    {name:'پماد زنجبیل',dose:'',price:'210'},
+    {name:'پماد لموریا',dose:'',price:'398'},{name:'پماد ام جی',dose:'',price:'350'},
+    {name:'ویشکا',dose:'',price:'336'},{name:'داپسوژل',dose:'',price:'980'},
+    {name:'محلول کلوبتازول',dose:'',price:'68'},{name:'محلول بتامتازون',dose:'20 میل',price:'57'},
+    {name:'محلول کلوتریزون',dose:'',price:'96'},{name:'محلول کلوتریمازول',dose:'',price:'150'},
+    {name:'محلول کالامین',dose:'',price:'76'},{name:'محلول مومتازون',dose:'',price:'90'},
+    {name:'کرم واژینال کلوتریمازول',dose:'1% 50 گرم',price:'140'},
+    {name:'کرم ایورمکتین',dose:'1% 15 گرم',price:'175'},
+    {name:'کرم رزماریدین',dose:'',price:'105'},{name:'کرم کاپسیدین',dose:'',price:'100'},
+    {name:'آیس مینرال کاسه ای',dose:'',price:'299'},
+  ]},
+  { name: 'پماد چشمی و قطره', drugs: [
+    {name:'پماد چشمی بتامتازون',dose:'',price:'65'},{name:'پماد چشمی تتراسایکلین',dose:'',price:'52'},
+    {name:'پماد چشمی آ چشمی',dose:'',price:'52'},{name:'پماد چشمی جنتکس',dose:'',price:'65'},
+    {name:'پماد چشمی هیدروکورتیزون',dose:'',price:'52'},
+    {name:'قطره بتامتازون',dose:'',price:'60'},{name:'قطره دگزامتازون',dose:'',price:'49'},
+    {name:'قطره سیناتیرز',dose:'',price:'120'},{name:'قطره نفازولین',dose:'',price:'60'},
+    {name:'قطره نفازولین آنتازولین',dose:'',price:'69'},{name:'قطره سیپلکس',dose:'',price:'55'},
+    {name:'قطره باکتی ماید',dose:'10%',price:'60'},{name:'قطره باکتی ماید',dose:'20%',price:'65'},
+    {name:'قطره فلوکورت',dose:'',price:'83'},{name:'قطره جنتامایسین',dose:'',price:'65'},
+    {name:'قطره سیپروزونیت',dose:'',price:'47.5'},{name:'قطره آنستوکائین',dose:'',price:'65'},
+    {name:'قطره کلرامفنیکل',dose:'',price:'82'},{name:'قطره آزیترومایسین',dose:'',price:'75'},
+    {name:'قطره دیکلوفناک',dose:'',price:'48'},{name:'قطره کرومولین',dose:'',price:'47'},
+    {name:'قطره پردنیزولون',dose:'',price:'89'},{name:'قطره تیر آی',dose:'',price:'100'},
+    {name:'قطره زایلومول',dose:'',price:'135'},{name:'قطره الانتین',dose:'',price:'80'},
+    {name:'آرتیپیک',dose:'0.32% (21 عددی)',price:'324'},
+    {name:'قطره آیوسپت',dose:'',price:'127'},{name:'قطره سینالون',dose:'(10 عددی)',price:'154'},
+    {name:'قطره سینالون ادونسد',dose:'(10 عددی)',price:'253'},
+    {name:'قطره سدیم کلراید بینی',dose:'',price:'120'},{name:'قطره پرسیکا',dose:'',price:'90'},
+    {name:'اسپری بینی آزلاستین',dose:'',price:'190'},
+    {name:'اسپری بینی آزلاستین/فلوتیکازون',dose:'',price:'210'},
+    {name:'اسپری بینی کرومولین',dose:'',price:'64'},
+    {name:'اسپری بینی ایپراتروپیوم',dose:'42',price:'210'},{name:'اسپری بینی ایپراتروپیوم',dose:'21',price:'190'},
+    {name:'اسپری بینی مومتازون',dose:'',price:'65'},{name:'اسپری بینی نفازولین',dose:'',price:'55'},
+    {name:'اسپری سدیم کلراید بینی',dose:'',price:'110'},
+    {name:'اسپری لیدوکائین',dose:'50 میل',price:'400'},{name:'اسپری لیدوکائین',dose:'20 میل',price:'273'},
+    {name:'اسپری استنشاقی فورموترول',dose:'(60 عدد)',price:'1.320'},
+    {name:'اسپری استنشاقی روودیل',dose:'12 با دستگاه (60 عدد)',price:'1.680'},
+    {name:'اسپری استنشاقی روهیلر روکورت',dose:'320 (120 عددی) با دستگاه',price:'2.220'},
+  ]},
+  { name: 'سرم و تزریقات', drugs: [
+    {name:'سرم نرمال سالین',dose:'0.5',price:'119'},{name:'سرم نرمال سالین',dose:'1',price:'90'},
+    {name:'سرم یک سوم دو سوم',dose:'0.5',price:'100'},{name:'سرم یک سوم دو سوم',dose:'1',price:'120'},
+    {name:'سرم هاف سالین',dose:'0.5',price:'110'},{name:'سرم هاف سالین',dose:'1',price:'115'},
+    {name:'سرم رینگر',dose:'0.5',price:'125'},{name:'سرم رینگر',dose:'1',price:'170'},
+    {name:'سرم دکستروز 5 درصد',dose:'0.5',price:'110'},{name:'سرم دکستروز 5 درصد',dose:'1',price:'120'},
+    {name:'سرم شستشو',dose:'0.5',price:'115'},{name:'سرم شستشو',dose:'1',price:'90'},
+    {name:'پک سرم سالین',dose:'0.5',price:'250'},{name:'پک سرم نرمال سالین',dose:'1',price:'220'},
+    {name:'پک سرم یک سوم دو سوم',dose:'0.5',price:'250'},{name:'پک سرم یک سوم دو سوم',dose:'1',price:'220'},
+    {name:'پک سرم رینگر',dose:'0.5',price:'240'},{name:'پک سرم رینگر',dose:'1',price:'275'},
+    {name:'ست سرم',dose:'',price:'68'},{name:'انژیوکت صورتی و آبی',dose:'',price:'55'},{name:'انژیوکت زرد',dose:'',price:'55'},
+    {name:'سرنگ',dose:'2 cc',price:'7'},{name:'سرنگ',dose:'5 cc',price:'8'},
+    {name:'سرنگ انسولین سر سوزن جدا',dose:'',price:'11'},{name:'سرنگ انسولین پیوسته',dose:'',price:'11'},
+    {name:'پد الکلی',dose:'',price:'3'},{name:'چسب انژیوکت',dose:'',price:'5'},{name:'آب مقطر',dose:'',price:'15'},
+    {name:'آمپول سفتی زوکسیم',dose:'1',price:'224'},{name:'آمپول سفتی زوکسیم',dose:'0.5',price:'184'},
+    {name:'آمپول سفتریاکسون',dose:'1',price:'170'},{name:'آمپول سفتریاکسون',dose:'0.5',price:'154'},
+    {name:'آمپول دگزامتازون',dose:'',price:'78'},{name:'آمپول بتامتازون',dose:'',price:'73'},
+    {name:'آمپول کلرفنیرامین',dose:'',price:'88'},{name:'آمپول نوروبیون',dose:'',price:'84'},
+    {name:'آمپول ب-کمپلکس',dose:'',price:'73'},{name:'آمپول ویتامین B12',dose:'',price:'78'},
+    {name:'آمپول ویتامین B6',dose:'100',price:'58'},{name:'آمپول ویتامین B6',dose:'300',price:'68'},
+    {name:'آمپول ویتامین D3',dose:'',price:'68'},{name:'آمپول ویتامین C',dose:'',price:'69'},
+    {name:'آمپول پنی سیلین',dose:'6.3.3',price:'79'},{name:'آمپول پنی سیلین',dose:'800',price:'79'},{name:'آمپول پنی سیلین',dose:'1200',price:'84'},
+    {name:'آمپول هیدروکورتیزون',dose:'',price:'100'},{name:'آمپول پنتوپرازول',dose:'',price:'100'},
+    {name:'آمپول سفازولین',dose:'1',price:'170'},{name:'آمپول سفازولین',dose:'0.5',price:'154'},
+    {name:'آمپول بتامتازون LA',dose:'',price:'98'},{name:'آمپول کتورولاک',dose:'',price:'78'},
+    {name:'آمپول پیروکسیکام',dose:'',price:'64'},{name:'آمپول متوکاربامول',dose:'',price:'110'},
+    {name:'آمپول آپوتل',dose:'',price:'70'},{name:'آمپول اندانسترون',dose:'',price:'58'},
+    {name:'آمپول هیوسین',dose:'',price:'60'},{name:'آمپول متوکلوپرامید',dose:'',price:'68'},
+    {name:'آمپول تریامسینولون',dose:'',price:'68'},{name:'آمپول تریام هگزال',dose:'',price:'460'},
+    {name:'آمپول متیل پردنیزولون',dose:'',price:'93'},
+    {name:'آمپول فوروزماید',dose:'40',price:'69'},{name:'آمپول فوروزماید',dose:'20',price:'64'},
+    {name:'آمپول دیسیکلومین',dose:'',price:'71'},{name:'آمپول دکسپانتنول',dose:'',price:'73'},
+    {name:'آمپول بیوتین',dose:'',price:'78'},{name:'آمپول برم هگزین',dose:'',price:'78'},
+    {name:'آمپول پرومتازین',dose:'',price:'68'},{name:'آمپول ناندرلون',dose:'',price:'103'},
+    {name:'آمپول تستوسترون',dose:'250',price:'93'},{name:'آمپول تستوسترون',dose:'100',price:'73'},
+    {name:'آمپول بی پریدین',dose:'',price:'68'},{name:'آمپول سایمتیدین',dose:'',price:'73'},
+    {name:'آمپول فاموتیدین',dose:'',price:'68'},{name:'آمپول تتراکوزکتاید',dose:'',price:'193'},
+    {name:'آمپول جنتامیسین',dose:'80',price:'88'},{name:'آمپول جنتامیسین',dose:'40',price:'78'},{name:'آمپول جنتامیسین',dose:'20',price:'73'},
+    {name:'آمپول تری فلوئوپرازین',dose:'',price:'78'},
+    {name:'آمپول لیدوکائین',dose:'',price:'50'},
+    {name:'آمپول آمپی سیلین',dose:'1 گرم',price:'115'},
+    {name:'آمپول هپارین',dose:'',price:'130'},
+  ]},
+  { name: 'شیاف', drugs: [
+    {name:'شیاف دیکلوفناک',dose:'100',price:'140'},{name:'شیاف دیکلوفناک',dose:'50',price:'130'},
+    {name:'شیاف استامینوفن',dose:'325',price:'150'},{name:'شیاف استامینوفن',dose:'125',price:'140'},
+    {name:'شیاف آنتی هموروئید',dose:'',price:'170'},
+    {name:'شیاف ایندومتاسین',dose:'50',price:'65'},{name:'شیاف ایندومتاسین',dose:'100',price:'150'},
+    {name:'شیاف ناپروکسن',dose:'',price:'160'},
+    {name:'شیاف گلیسیرین بزرگسالان',dose:'',price:'150'},{name:'شیاف گلیسیرین کودکان',dose:'',price:'140'},
+    {name:'شیاف بیزاکودیل',dose:'10',price:'150'},{name:'شیاف بیزاکودیل',dose:'5',price:'140'},
+    {name:'شیاف اندانسترون',dose:'',price:'84'},
+    {name:'شیاف پروژسترون',dose:'400',price:'260'},{name:'شیاف پروژسترون',dose:'',price:'550'},
+    {name:'شیاف ام جی',dose:'',price:'252'},
+  ]},
+  { name: 'متفرقه', drugs: [
+    {name:'دنتول',dose:'',price:'105'},
+    {name:'سیلدنافیل',dose:'50',price:'52'},{name:'سیلدنافیل',dose:'100',price:'79'},
+    {name:'کلسیم جوشان نکستایل',dose:'',price:'246'},{name:'کی بون پلاس جوشان',dose:'',price:'242'},
+    {name:'انسولین رایزودگ',dose:'(یک عدد)',price:'1.525'},{name:'انسولین نووروپید',dose:'(یک عدد)',price:'890'},
+    {name:'انسولین نوومیکس',dose:'(یک عدد)',price:'890'},{name:'انسولین لانتوس',dose:'(یک عدد)',price:'860'},
+    {name:'انسولین توجئو',dose:'(یک عدد)',price:'1.460'},{name:'انسولین آباساگلار',dose:'(یک عدد)',price:'1.460'},
+    {name:'انسولین لوومیر',dose:'(یک عدد)',price:'890'},
+    {name:'استیل سیستئین',dose:'600',price:'170'},{name:'سی لاکس',dose:'',price:'200'},
+    {name:'اکس کاربازپین',dose:'300',price:'120'},{name:'اکس کاربازپین',dose:'150',price:'60'},
+    {name:'قلم بینی',dose:'',price:'100'},
+    {name:'پماد ویکس',dose:'19 گرم',price:'120'},{name:'پماد ویکس',dose:'38 گرم',price:'190'},
+    {name:'پماد تریپل سولفا',dose:'',price:'255'},
+    {name:'ژل مینرال ایس',dose:'300م پمپی',price:'329'},{name:'ژل مینرال ایس',dose:'کاسه ای',price:'300'},
+    {name:'ژل ایس مینرال',dose:'80م تیوپی',price:'279'},{name:'ژل مینرال ایس',dose:'100م کاسه ای',price:'290'},
+    {name:'مخمر آبجو',dose:'',price:'420'},
+    {name:'پیدرولاکس',dose:'(10 عددی)',price:'260'},{name:'میکسودین',dose:'(32 عددی)',price:'832'},
+    {name:'پاورفیت',dose:'(32 عددی)',price:'832'},{name:'آوودین',dose:'(32 عددی)',price:'640'},
+    {name:'آرترولیستیکا',dose:'(32 عددی)',price:'640'},
+    {name:'ارلیستات (ونوستات)',dose:'(21 عددی)',price:'630'},
+    {name:'استئوکینون',dose:'',price:'722'},{name:'فرودین',dose:'',price:'400'},
+    {name:'کلسی پاور',dose:'',price:'549'},{name:'مگنیفورت',dose:'',price:'487'},
+    {name:'سیترابن',dose:'',price:'483'},
+    {name:'ویتامین سی',dose:'1000 جوشان',price:'240'},
+  ]},
+  { name: 'گیاهی', drugs: [
+    {name:'شیکوریدین',dose:'',price:'67'},{name:'آلتادین',dose:'',price:'70'},
+    {name:'گالگا',dose:'',price:'30'},{name:'بخور اکالیپتوس',dose:'(1 عددی)',price:'52'},
+    {name:'پیسیلیوم ساده',dose:'',price:'240'},{name:'پیسیلیوم پرتقالی',dose:'',price:'240'},
+    {name:'پلانتاژل',dose:'(10 عددی)',price:'220'},{name:'کورکوما',dose:'',price:'250'},
+    {name:'گرین تیدین',dose:'',price:'350'},{name:'سینارکول',dose:'',price:'300'},
+    {name:'سیر',dose:'',price:'125'},{name:'پروستادین',dose:'',price:'450'},
+    {name:'ونویتال',dose:'',price:'120'},{name:'پی برن ساده',dose:'',price:'320'},
+    {name:'پی برن موزی',dose:'',price:'340'},{name:'دنتا کید',dose:'',price:'65'},
+    {name:'باری اسلیم',dose:'',price:'300'},{name:'سیاه دانه',dose:'',price:'285'},
+    {name:'لوسیون سی ام',dose:'',price:'150'},{name:'زیره',dose:'',price:'240'},
+    {name:'لیموترش',dose:'',price:'240'},{name:'پرستا باریج',dose:'',price:'300'},
+    {name:'تیموژل',dose:'',price:'85'},{name:'اسپری سی ام',dose:'',price:'200'},
+    {name:'گرین فیت',dose:'',price:'120'},{name:'سوپرمینت',dose:'',price:'144'},
+    {name:'لیتورکس بی',dose:'',price:'195'},{name:'لوسیون ام جی',dose:'',price:'130'},
+    {name:'لکورکس',dose:'',price:'290'},{name:'آنتی فیشر',dose:'',price:'150'},
+    {name:'میرتکس',dose:'',price:'98'},{name:'های سنس',dose:'',price:'160'},
+    {name:'واژیهیل',dose:'',price:'140'},{name:'اشتهاآور انار',dose:'',price:'160'},
+    {name:'قطره سنکل',dose:'',price:'250'},{name:'قطره پروستاتان',dose:'',price:'260'},
+    {name:'قرص پروستاتان',dose:'',price:'270'},{name:'اسلیم کوئیک',dose:'',price:'360'},
+    {name:'قرص آفرودیت',dose:'',price:'420'},{name:'قطره آفرودیت',dose:'',price:'325'},
+    {name:'قطره شیرافزا',dose:'',price:'300'},
+    {name:'لیورگل',dose:'70',price:'300'},{name:'لیورگل',dose:'140',price:'360'},
+    {name:'قرص شیرافزا',dose:'',price:'330'},{name:'قرص سنالین',dose:'',price:'135'},
+    {name:'قرص آکنوگل',dose:'',price:'200'},{name:'قرص لیکوفار',dose:'',price:'225'},
+    {name:'زینتوما',dose:'',price:'180'},{name:'ب ب کلد',dose:'',price:'175'},
+    {name:'بی بی سد',dose:'',price:'250'},{name:'سناگل',dose:'',price:'165'},
+    {name:'سالویگل',dose:'',price:'240'},{name:'جینکوگل',dose:'',price:'225'},
+    {name:'هموروهرپ',dose:'',price:'260'},{name:'سنالین',dose:'',price:'180'},
+    {name:'قطره ایرگل',dose:'',price:'175'},{name:'ژل سیمودنت',dose:'',price:'172'},
+  ]},
+];
+
+// ===================== STATE =====================
+let isAdmin = false;
+let currentEditIndex = null;
+let pricesOverride = {};
+let activeCategory = 'همه';
+
+// Build flat drug list with categories
+let allDrugs = [];
+RAW_CATEGORIES.forEach(cat => {
+  cat.drugs.forEach(d => {
+    allDrugs.push({ ...d, category: cat.name, id: allDrugs.length });
+  });
+});
+
+// Load prices from localStorage (simulate shared for demo)
+function loadPrices() {
+  try {
+    const saved = localStorage.getItem('pharm_prices_v2');
+    if (saved) pricesOverride = JSON.parse(saved);
+  } catch(e) {}
+}
+function savePrices() {
+  try {
+    localStorage.setItem('pharm_prices_v2', JSON.stringify(pricesOverride));
+  } catch(e) {}
+}
+
+// ===================== RENDER =====================
+function getPrice(drug) {
+  return pricesOverride.hasOwnProperty(drug.id)
+    ? pricesOverride[drug.id]
+    : drug.price;
+}
+
+function updateStats() {
+  const total = allDrugs.length;
+  const priced = allDrugs.filter(d => getPrice(d) !== '').length;
+  const cats = RAW_CATEGORIES.length;
+  document.getElementById('totalCount').textContent = total.toLocaleString('fa-IR');
+  document.getElementById('pricedCount').textContent = priced.toLocaleString('fa-IR');
+  document.getElementById('catCount').textContent = cats.toLocaleString('fa-IR');
+  const now = new Date();
+  document.getElementById('updateTime').textContent =
+    now.toLocaleTimeString('fa-IR', {hour:'2-digit', minute:'2-digit'});
+}
+
+function buildCatFilter() {
+  const container = document.getElementById('catFilter');
+  const cats = ['همه', ...RAW_CATEGORIES.map(c => c.name)];
+  container.innerHTML = cats.map(c =>
+    `<button class="cat-btn ${c===activeCategory?'active':''}" onclick="setCategory('${c}')">${c}</button>`
+  ).join('');
+}
+
+function setCategory(cat) {
+  activeCategory = cat;
+  buildCatFilter();
+  filterDrugs();
+}
+
+function filterDrugs() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const tbody = document.getElementById('drugTableBody');
+
+  let results = allDrugs.filter(d => {
+    const catOk = activeCategory === 'همه' || d.category === activeCategory;
+    if (!catOk) return false;
+    if (!q) return true;
+    const haystack = (d.name + ' ' + d.dose).toLowerCase();
+    // Support partial match of any token
+    return haystack.includes(q);
+  });
+
+  document.getElementById('resultCount').innerHTML =
+    `<strong>${results.length.toLocaleString('fa-IR')}</strong> دارو یافت شد`;
+
+  if (results.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="no-result">🔍 دارویی با این مشخصات پیدا نشد</td></tr>`;
+    return;
+  }
+
+  const editCol = isAdmin;
+  tbody.innerHTML = results.map((d, i) => {
+    const price = getPrice(d);
+    const priceHtml = price
+      ? `<span class="price-cell">${price}</span>`
+      : `<span class="price-empty">— موجود نیست</span>`;
+    const editBtn = editCol
+      ? `<button class="edit-price-btn" onclick="openEditModal(${d.id})" title="ویرایش قیمت">✏️</button>`
+      : '';
+    return `<tr>
+      <td>${(i+1).toLocaleString('fa-IR')}</td>
+      <td class="drug-name">${d.name}${d.dose ? `<span class="drug-dose">${d.dose}</span>` : ''}</td>
+      <td><span class="cat-tag">${d.category}</span></td>
+      <td>${priceHtml}</td>
+      ${editCol ? `<td>${editBtn}</td>` : ''}
+    </tr>`;
+  }).join('');
+}
+
+// ===================== ADMIN =====================
+function openLoginModal() {
+  if (isAdmin) { logout(); return; }
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginError').textContent = '';
+  document.getElementById('loginModal').classList.add('open');
+  setTimeout(() => document.getElementById('loginUser').focus(), 100);
+}
+
+function doLogin() {
+  const u = document.getElementById('loginUser').value.trim();
+  const p = document.getElementById('loginPass').value.trim();
+  if (u === ADMIN_USER && p === ADMIN_PASS) {
+    isAdmin = true;
+    document.body.classList.add('is-admin');
+    document.getElementById('adminBar').classList.add('visible');
+    document.getElementById('editColHeader').style.display = '';
+    document.querySelector('.btn-admin').textContent = 'خروج مدیر';
+    closeModal('loginModal');
+    filterDrugs();
+    toast('✅ به پنل مدیریت وارد شدید', 'success');
+  } else {
+    document.getElementById('loginError').textContent = '❌ نام کاربری یا رمز اشتباه است';
+  }
+}
+
+function logout() {
+  isAdmin = false;
+  document.body.classList.remove('is-admin');
+  document.getElementById('adminBar').classList.remove('visible');
+  document.getElementById('editColHeader').style.display = 'none';
+  document.querySelector('.btn-admin').textContent = 'ورود مدیر';
+  filterDrugs();
+  toast('خارج شدید', '');
+}
+
+let editingDrugId = null;
+function openEditModal(id) {
+  if (!isAdmin) return;
+  editingDrugId = id;
+  const drug = allDrugs.find(d => d.id === id);
+  document.getElementById('editDrugName').textContent =
+    drug.name + (drug.dose ? ' — ' + drug.dose : '');
+  document.getElementById('editPriceInput').value = getPrice(drug) || '';
+  document.getElementById('editModal').classList.add('open');
+  setTimeout(() => document.getElementById('editPriceInput').select(), 100);
+}
+
+function savePrice() {
+  if (editingDrugId === null) return;
+  const val = document.getElementById('editPriceInput').value.trim();
+  pricesOverride[editingDrugId] = val;
+  savePrices();
+  updateStats();
+  filterDrugs();
+  closeModal('editModal');
+  toast('💾 قیمت با موفقیت ذخیره شد', 'success');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// Click outside to close
+document.querySelectorAll('.modal-overlay').forEach(m => {
+  m.addEventListener('click', e => {
+    if (e.target === m) closeModal(m.id);
+  });
+});
+
+// ===================== TOAST =====================
+function toast(msg, type) {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => t.remove(), 2600);
+}
+
+// ===================== INIT =====================
+loadPrices();
+buildCatFilter();
+updateStats();
+filterDrugs();
+// Refresh time every minute
+setInterval(updateStats, 60000);
+</script>
+</body>
+</html>
